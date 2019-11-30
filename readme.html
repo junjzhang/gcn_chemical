@@ -367,20 +367,61 @@ summary {
 
 <div id="ve445-project" class="section level1">
 <h1>VE445 project</h1>
-<div id="method" class="section level2">
-<h2>Method</h2>
-<p>In this project, I use gcn to handle the molecule</p>
+<div id="name-on-kaggle" class="section level3">
+<h3>Name on Kaggle</h3>
+<p>My name is Junjzhang, actually, first I use Bufan He, after I see the anouncement regarding kaggle name, I create a new one and submits following work on that account. I feel so sorry about the inconvience caused by me.</p>
+</div>
+<div id="description" class="section level3">
+<h3>Description</h3>
+<p>In this project, GCN is used to handle the molecule.</p>
+<div id="graph-embedding" class="section level4">
+<h4>Graph embedding</h4>
 <ul>
-<li><p>Since the molecule is heterogeneous graph, I used onhot style to represent the feature, which includes what’s tha atom and is it aromatic. For edge infomation, since simply implemented the edge information into the weight in the adjacent matrix will have negative impact on the F1-score, I just ignore edge information here, which can be improved by more fancy method.</p></li>
-<li><p>The Laplacian matrix I use here is the random walk one, which is <span class="math inline">\(D^{-1}A\)</span>, where <span class="math inline">\(D\)</span> is the degree matrix and <span class="math inline">\(A\)</span> is the adjacent matrix.</p></li>
+<li><p>Since the molecule is heterogeneous graph, I used onhot style to represent the feature with size <span class="math inline">\((83,1)\)</span>, which includes what’s tha atom and is it aromatic. For edge infomation, I just convert the bond information into the weight in the adjacent matrix.</p></li>
+<li><p>The Laplacian matrix I use here is the random walk one, which is <span class="math inline">\(\hat{D}^{-1}\hat{A}\)</span>, where <span class="math inline">\(\hat{D}\)</span> is the degree matrix with self-loop and <span class="math inline">\(\hat{A}\)</span> is the adjacent matrix with self loop.</p></li>
 </ul>
 </div>
-<div id="usage" class="section level2">
-<h2>Usage</h2>
+<div id="network-structrue" class="section level4">
+<h4>Network structrue</h4>
 <ul>
+<li><p>Convolution layer 1 :(83,60) relu</p></li>
+<li><p>Convolution layer 2: (60,45) relu</p></li>
+<li><p>Convolution layer 3: (45,35) relu</p></li>
+<li><p>Convolution layer 4: (35,30) relu</p>
+<ul>
+<li>reduce by sum by each features</li>
+</ul></li>
+<li><p>Full connected layer 1: (30,30) relu</p></li>
+<li><p>Full connected layer 2: (30,30) tanh</p></li>
+<li><p>output layer: (30,2) softmax</p></li>
+</ul>
+</div>
+<div id="union-metric" class="section level4">
+<h4>Union metric</h4>
+<ul>
+<li><p>Union <span class="math inline">\(accuracy = 0.9116218457528729\)</span></p></li>
+<li><p>Union <span class="math inline">\(banlanced accuracy = 0.6543738895188378\)</span></p></li>
+<li><p>Union <span class="math inline">\(F1-score = 0.650564170843316\)</span></p></li>
+</ul>
+</div>
+<div id="traning-technique" class="section level4">
+<h4>Traning technique</h4>
+<ul>
+<li><p>Since the dataset is inbanlanced, The feeded batch is consists of 17 positive data points and 33 negative data points, the number of positive data points will grow as epoch grows.</p></li>
+<li><p>Learning rate decay is used.</p></li>
+<li><p>Early drop since I found that good performance on validation set will have a relative bad performance on test set. This main casued by overfitting.</p></li>
+<li><p>Dropout is used at first and be abandoned soon because I found that since the number of hidden layer is not that much, the dropout will make it hard to converge.</p></li>
+<li><p>L2 penelty is used on full connected layer to prevent overfitting.</p></li>
+</ul>
+</div>
+</div>
+<div id="usage" class="section level3">
+<h3>Usage</h3>
+<ul>
+<li><p>Since GCN is used here, the original data will be converted into graph first.</p></li>
 <li><p>If you didn’t process data before, when you first run “./test.py” or “./train.py”, it will process data automatically. Thus, it may take some time.</p></li>
-<li><p>The train.py will replace previous trained model, if you want keep previous one, please change the name of saved model in “./train.py”</p></li>
-<li><p>The process of data needs library “pysmiles” and “rdkit”, to install</p></li>
+<li><p>The train.py will replace previous trained model, if you want keep previous one, please change the name of saved model in “./train.py”.</p></li>
+<li><p>The process of data needs library “pysmiles” and “rdkit”, to install:</p></li>
 </ul>
 <pre class="{python}"><code>pip install pysmiles
 conda install -c conda-forge rdkit</code></pre>
