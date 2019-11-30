@@ -1,9 +1,5 @@
 # VE445 project
 
-### Name on Kaggle
-
-My name is Junjzhang, actually, first I use Bufan He, after I see the anouncement regarding kaggle name, I create a new one and submits following work on that account. I feel so sorry about the inconvience caused by me.
-
 ### Description
 
 In this project, GCN is used to handle the molecule.
