@@ -1,4 +1,3 @@
-# VE445 project
 
 ### Description
 
